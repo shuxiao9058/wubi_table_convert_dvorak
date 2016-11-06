@@ -37,15 +37,16 @@ func convertLine(line string) (string, error) {
 	if len(newSplits) < 2 {
 		return "", errors.New("qqq")
 	}
-	out := ""
-	for i := 1; i < len(newSplits); i++ {
-		// out = out + fmt.Sprintf("%s\t%s\n", newSplits[i], tableConvert(newSplits[0]))
-		// out = out + fmt.Sprintf("%s\t%s\n", newSplits[i], newSplits[0])
-		// out = out + fmt.Sprintf("%s\t%s\n", newSplits[i], newSplits[0])
-		out = out + fmt.Sprintf("%s\t%s\n", newSplits[i], tableConvert(newSplits[0]))
-	}
 
-	return out, nil
+	// out := ""
+	// for i := 1; i < len(newSplits); i++ {
+	//	// out = out + fmt.Sprintf("%s\t%s\n", newSplits[i], tableConvert(newSplits[0]))
+	//	// out = out + fmt.Sprintf("%s\t%s\n", newSplits[i], newSplits[0])
+	//	// out = out + fmt.Sprintf("%s\t%s\n", newSplits[i], newSplits[0])
+	//	out = out + fmt.Sprintf("%s\t%s\n", newSplits[i], tableConvert(newSplits[0]))
+	// }
+
+	// return out, nil
 
 	// 0是中文；1,3是编码；2是频度
 	// if len(newSplits) < 3 {
@@ -69,14 +70,13 @@ func convertLine(line string) (string, error) {
 	//		newSplits[0], tableConvert(newSplits[1]), newSplits[2]), nil
 	// }
 
-	// if len(newSplits) > 3 {
-	//	return fmt.Sprintf("%s\t%s\t%s\t%s",
-	//		newSplits[0], tableConvert(newSplits[1]), newSplits[2], tableConvert(newSplits[3])), nil
-	// } else {
-	//	return fmt.Sprintf("%s\t%s\t%s",
-	//		newSplits[0], tableConvert(newSplits[1]), newSplits[2]), nil
-	// }
-
+	if len(newSplits) > 3 {
+		return fmt.Sprintf("%s\t%s\t%s\t%s\n",
+			newSplits[0], tableConvert(newSplits[1]), newSplits[2], tableConvert(newSplits[3])), nil
+	} else {
+		return fmt.Sprintf("%s\t%s\t%s\n",
+			newSplits[0], tableConvert(newSplits[1]), newSplits[2]), nil
+	}
 }
 
 // var tableMap = map[string]string{}
@@ -150,7 +150,8 @@ func main() {
 		return
 	}
 
-	dicts, err := readLines("1.06c_16016.txt")
+	// dicts, err := readLines("1.06c_16016.txt")
+	dicts, err := readLines("wubi06.txt")
 	if err != nil {
 		log.Println("error load dicts")
 		return
