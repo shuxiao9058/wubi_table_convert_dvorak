@@ -24,6 +24,29 @@ func readLines(path string) ([]string, error) {
 	return lines, scanner.Err()
 }
 
+func guHuConvertLine(line string) (string, error) {
+	splits := strings.Split(line, " ")
+	newSplits := []string{}
+	for _, s := range splits {
+		s = strings.TrimSpace(s)
+		if s != "" {
+			newSplits = append(newSplits, s)
+		}
+	}
+
+	if len(newSplits) < 2 {
+		return "", errors.New("error size of newSplits")
+	}
+
+	out := ""
+	for i := 1; i < len(newSplits); i++ {
+		out = out + fmt.Sprintf("%s\t%s\n", newSplits[i], tableConvert(newSplits[0]))
+	}
+
+	return out, nil
+
+}
+
 func convertLine(line string) (string, error) {
 	splits := strings.Split(line, " ")
 	newSplits := []string{}
@@ -151,14 +174,16 @@ func main() {
 	}
 
 	// dicts, err := readLines("1.06c_16016.txt")
-	dicts, err := readLines("wubi06.txt")
+	dicts, err := readLines("1.06C_PRO.txt")
+	// dicts, err := readLines("wubi06.txt")
 	if err != nil {
 		log.Println("error load dicts")
 		return
 	}
 
 	for _, line := range dicts {
-		out, err := convertLine(line)
+		// out, err := convertLine(line)
+		out, err := guHuConvertLine(line)
 		if err != nil {
 		} else {
 			// log.Println(out)
