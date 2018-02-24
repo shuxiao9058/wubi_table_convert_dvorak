@@ -167,14 +167,14 @@ func tableConvert(code string) string {
 }
 
 func main() {
-	f, err := os.OpenFile("out.txt", os.O_RDWR|os.O_CREATE, 0777)
+	f, err := os.OpenFile("out_18.txt", os.O_RDWR|os.O_CREATE, 0777)
 	if err != nil {
 		log.Fatal(err.Error())
 		return
 	}
 
 	// dicts, err := readLines("1.06c_16016.txt")
-	dicts, err := readLines("1.06C_PRO.txt")
+	dicts, err := readLines("1.06d_18018.txt")
 	// dicts, err := readLines("wubi06.txt")
 	if err != nil {
 		log.Println("error load dicts")
