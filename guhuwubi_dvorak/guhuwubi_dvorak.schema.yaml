@@ -1,0 +1,131 @@
+# Rime schema settings
+# encoding: utf-8
+
+schema:
+  schema_id: guhuwubi_dvorak
+  name: guhuwubi_dvorak
+  version: "1.06c"
+  author:
+    - 发明人 王永民先生
+  description: |
+    孤狐新世纪五笔dvorak
+    基于孤狐五笔 1.06c码表生成
+    敲 y 键进入拼音反查
+  dependencies:
+     - pinyin_simp
+
+switches:
+  - name: ascii_mode
+    reset: 0
+    states: [ 中文, 西文 ]
+  - name: full_shape
+    states: [ 半角, 全角 ]
+  - name: extended_charset
+    states: [ 通用, 增廣 ]
+  - name: ascii_punct
+    states: ["。，", "．，"]
+  - name: simplification
+    states: [ 漢字, 汉字 ]
+
+engine:
+  processors:
+    - ascii_composer
+    - recognizer
+    - key_binder
+    - speller
+    - punctuator
+    - selector
+    - navigator
+    - express_editor
+  segmentors:
+    - ascii_segmentor
+    - matcher
+    - abc_segmentor
+    - punct_segmentor
+    - fallback_segmentor
+  translators:
+    - punct_translator
+    - reverse_lookup_translator
+    - table_translator
+  filters:
+    - simplifier
+    - uniquifier
+
+speller:
+   # alphabet: zyxwvutsrqponmlkjihgfedcba; # 分号也是会使用的
+   # delimiter: " ;'"
+   max_code_length: 4
+   auto_select: true
+   auto_select_unique_candidate: true
+   # max_code_length: 4
+   # algebra:
+    # - derive/^([jqxy])u$/$1v/ # ju jv都是可以的
+    # - xform/^([aoe].*)$/U$1/  # 添上固定的零聲母U
+    # - xform/^/O/            # 替換聲母鍵，用大寫以防與原有的字母混淆
+
+translator:
+  dictionary: guhuwubi_dvorak
+  enable_charset_filter: true #启用罕见字過濾
+  enable_sentence: true
+  enable_encoder: true
+  encode_commit_history: true
+  max_phrase_length: 4
+  enable_user_dict: true
+  # enable_completion: false
+  disable_user_dict_for_patterns:
+    - "^y.*$"
+
+reverse_lookup:
+  dictionary: pinyin_simp
+  prefix: "y"
+  suffix: "'"
+  tips: 〔拼音〕
+  preedit_format:
+    - xform/([nl])v/$1ü/
+    - xform/([nl])ue/$1üe/
+    - xform/([jqxy])v/$1u/
+
+punctuator:
+  import_preset: default
+
+key_binder:
+  import_preset: default
+  bindings:
+      - {accept: "Control+p", send: Up, when: composing}
+      - {accept: "Control+n", send: Down, when: composing}
+      - {accept: "Control+b", send: Left, when: composing}
+      - {accept: "Control+f", send: Right, when: composing}
+      - {accept: "Control+a", send: Home, when: composing}
+      - {accept: "Control+e", send: End, when: composing}
+      - {accept: "Control+d", send: Delete, when: composing}
+      - {accept: "Control+k", send: "Shift+Delete", when: composing}
+      - {accept: "Control+h", send: BackSpace, when: composing}
+      - {accept: "Control+g", send: Escape, when: composing}
+      - {accept: "Control+bracketleft", send: Escape, when: composing}
+      - {accept: "Alt+v", send: Page_Up, when: composing}
+      - {accept: "Control+v", send: Page_Down, when: composing}
+      - {accept: ISO_Left_Tab, send: Page_Up, when: composing}
+      - {accept: "Shift+Tab", send: Page_Up, when: composing}
+      - {accept: Tab, send: Page_Down, when: composing}
+      # - {accept: minus, send: Page_Up, when: has_menu}
+      # - {accept: equal, send: Page_Down, when: has_menu}
+      # - {accept: comma, send: Page_Up, when: paging}
+      # - {accept: period, send: Page_Down, when: has_menu}
+      - {accept: "Control+Shift+1", select: .next, when: always}
+      - {accept: "Control+Shift+2", toggle: ascii_mode, when: always}
+      - {accept: "Control+Shift+3", toggle: simplification, when: always}
+      - {accept: "Control+Shift+4", toggle: extended_charset, when: always}
+      # - {accept: "'", send: 2, when: has_menu} # 为了适应dvorak左右对称
+      # - {accept: "z", send: 3, when: has_menu}
+      # - {accept: "Shift+Shift_L", send: 2, when: has_menu}
+      # - {accept: "Shift+Shift_R", send: 3, when: has_menu}
+      # - { when: composing, accept: Return, send: Escape }
+      - {accept: "[", send: Page_Up, when: has_menu}
+      - {accept: "]", send: Page_Down, when: has_menu}
+      - {accept: semicolon, send: 2, when: has_menu}
+      - {accept: apostrophe, send: 3, when: has_menu}
+
+recognizer:
+  import_preset: default
+  patterns:
+    reverse_lookup: "^y[a-z]*'?$"
