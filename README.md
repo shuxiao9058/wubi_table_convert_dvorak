@@ -1,4 +1,4 @@
 # wubi_table_convert
 
-![码表示意图](dvorak-wubi08/dvorak-wubi08.png)
+![码表示意图](dvorak_wubi08/dvorak_wubi08.png)
 
